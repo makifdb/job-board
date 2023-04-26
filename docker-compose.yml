@@ -1,0 +1,145 @@
+version: "3.8"
+services:
+
+  nats:
+    container_name: job-nats
+    image: "nats:2.9.16-alpine3.17"
+    ports:
+      - "4222:4222"
+    restart: always
+    networks:
+      - job-site-network
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 4222"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    container_name: job-postgres
+    image: "postgres:15-alpine"
+    volumes:
+      - ./.data/postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - job-site-network
+    environment:
+      - POSTGRES_USER=job-site
+      - POSTGRES_PASSWORD=job-site
+      - POSTGRES_DB=job-site
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U job-site"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  meilisearch:
+    container_name: job-meilisearch
+    image: "getmeili/meilisearch:v1.1"
+    volumes:
+      - ./.data/meili-data:/meili_data
+    networks:
+      - job-site-network
+    ports:
+      - "7700:7700"
+    environment:
+      - MEILI_MASTER_KEY=masterKey
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -f http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    container_name: frontend
+    build:
+      dockerfile: Dockerfile.dev
+      context: frontend/
+    restart: always
+    volumes:
+      - ./frontend/:/app
+      - /app/node_modules
+    environment:
+      - PORT=8080
+    ports:
+      - "8080:8080"
+      - "24678:24678"
+    networks:
+      - job-site-network
+  
+  service-gateway:
+    container_name: service-gateway
+    build:
+      dockerfile: Dockerfile.service-gateway.dev
+      context: backend
+    restart: always
+    volumes:
+      - ./backend/:/src
+    ports:
+      - "3000:3000"
+    networks:
+      - job-site-network
+    environment:
+      - PROXY_PORT=3000
+      - JOB_API_URL=http://job-service:3001
+      - ACCOUNT_API_URL=http://account-service:3001
+    depends_on:
+      - job-service
+      - account-service
+
+  job-service:
+    container_name: job-service
+    build:
+      dockerfile: Dockerfile.job-service.dev
+      context: backend
+    restart: always
+    volumes:
+      - ./backend/:/src
+    networks:
+      - job-site-network
+    environment:
+      - SERVICE_PORT=3001
+      - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
+    depends_on:
+      - postgres
+
+  account-service:
+    container_name: account-service
+    build:
+      dockerfile: Dockerfile.account-service.dev
+      context: backend
+    restart: always
+    volumes:
+      - ./backend/:/src
+    networks:
+      - job-site-network
+    environment:
+      - SERVICE_PORT=3001
+      - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
+    depends_on:
+      - postgres
+
+  meili-manager:
+    container_name: meili-manager
+    build:
+      dockerfile: Dockerfile.meili-manager.dev
+      context: backend
+    restart: always
+    volumes:
+      - ./backend/app/meili-manager:/src/app/meili-manager
+      - ./backend/pkg:/src/pkg
+    networks:
+      - job-site-network
+    environment:
+      - MEILI_URL=http://meilisearch:7700
+      - MEILI_API_KEY=masterKey
+      - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
+    depends_on:
+      - postgres
+      - meilisearch
+
+networks:
+  job-site-network:
+    driver: bridge
