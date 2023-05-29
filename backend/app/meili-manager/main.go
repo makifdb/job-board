@@ -32,11 +32,9 @@ func PushJobsToMeili(Db *gorm.DB, index *meilisearch.Index) {
 			log.Println("error loading jobs to meili :" + err.Error())
 		} else {
 			log.Println("loaded jobs to meili")
-			log.Println("limit: ", limit)
-			log.Println("offset: ", offset)
 			offset += limit
 		}
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 }

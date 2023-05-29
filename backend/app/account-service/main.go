@@ -22,7 +22,8 @@ func main() {
 	Db = database.ConnectDB(DbURL)
 
 	app := fiber.New(fiber.Config{
-		AppName: "account-service",
+		AppName:               "account-service",
+		DisableStartupMessage: true,
 	})
 
 	app.Use(cors.New())

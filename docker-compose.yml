@@ -88,6 +88,23 @@ services:
     depends_on:
       - job-service
       - account-service
+  
+  crawler-manager:
+    container_name: crawler-manager
+    build:
+      dockerfile: Dockerfile.crawler-manager.dev
+      context: backend
+    restart: always
+    volumes:
+      - ./backend/:/src
+    networks:
+      - job-site-network
+    environment:
+      - SERVICE_PORT=3009
+      - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   job-service:
     container_name: job-service
@@ -103,7 +120,8 @@ services:
       - SERVICE_PORT=3001
       - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   account-service:
     container_name: account-service
@@ -119,7 +137,8 @@ services:
       - SERVICE_PORT=3001
       - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   meili-manager:
     container_name: meili-manager
@@ -137,8 +156,10 @@ services:
       - MEILI_API_KEY=masterKey
       - DB_URL=postgres://job-site:job-site@postgres:5432/job-site
     depends_on:
-      - postgres
-      - meilisearch
+      postgres:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
 
 networks:
   job-site-network:

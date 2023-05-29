@@ -1,6 +1,7 @@
 package meili
 
 import (
+	"encoding/json"
 	"job-site/pkg/entities"
 	"log"
 
@@ -24,22 +25,39 @@ func InitMeili(MeiliHost, MeiliApiKey string) *meilisearch.Index {
 
 	log.Println("meili connected")
 
+	// create index
+	_, err = client.CreateIndex(&meilisearch.IndexConfig{
+		Uid:        MEILI_INDEX,
+		PrimaryKey: "id",
+	})
+	if err != nil {
+		log.Println("Error creating index" + err.Error())
+	}
+
 	index := client.Index(MEILI_INDEX)
 
 	return index
 }
 
 func UpdateMeili(index *meilisearch.Index, documents []map[string]interface{}) {
+
+	// print pretty json
+	b, err2 := json.MarshalIndent(documents, "", "  ")
+	if err2 != nil {
+		log.Println("Error marshalling json" + err2.Error())
+	}
+	log.Println(string(b))
+
 	_, err := index.AddDocuments(documents)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error adding documents to meili" + err.Error())
 	}
 }
 
 func DeleteMeili(index *meilisearch.Index, id string) {
 	_, err := index.DeleteDocument(id)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error deleting document from meili" + err.Error())
 	}
 }
 
@@ -62,7 +80,7 @@ func LoadJobsToMeili(limit, offset int, db *gorm.DB, index *meilisearch.Index) e
 			"company_logo": job.CompanyLogo,
 			"tags":         job.PublicTags,
 			"created_at":   job.CreatedAt,
-			"description":  job.Description,
+			"source":       job.Source,
 		})
 	}
 

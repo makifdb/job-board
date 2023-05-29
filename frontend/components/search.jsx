@@ -30,7 +30,7 @@ export default function Search() {
     )
 }
 
-const Hit = ({ hit }: any) => (
+const Hit = ({ hit }) => (
     <div className="flex flex-row mt-4 p-4 w-full min-w-full rounded-lg items-center space-x-4 bg-gray-700 hover:bg-gray-800">
         <Link href={`/jobs/${hit.id}`} key={hit.id} className="flex flex-row w-full items-center space-x-4">
             <img src={hit.company_logo} alt={hit.company_name} width={100} height={100} className='rounded-full bg-white' />
@@ -38,9 +38,12 @@ const Hit = ({ hit }: any) => (
                 <h1 className="text-xl text-white">
                     <Highlight attribute="title" hit={hit} />
                 </h1>
-                <h2 className="text-lg text-gray-400">
+                <h2 className="text-lg text-gray-300">
                     <Highlight attribute="company_name" hit={hit} />
                 </h2>
+                <span className="text-gray-400">
+                    {hit.source}
+                </span>
             </div>
         </Link>
     </div>

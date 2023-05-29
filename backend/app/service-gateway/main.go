@@ -22,7 +22,8 @@ func main() {
 	log.Println("Service Gateway is running on port " + ProxyPort)
 
 	app := fiber.New(fiber.Config{
-		AppName: "service-gateway",
+		AppName:               "service-gateway",
+		DisableStartupMessage: true,
 	})
 
 	app.Use(logger.New())

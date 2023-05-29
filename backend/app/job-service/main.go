@@ -25,7 +25,8 @@ func main() {
 	Db = database.ConnectDB(DbURL)
 
 	app := fiber.New(fiber.Config{
-		AppName: "job-service",
+		AppName:               "job-service",
+		DisableStartupMessage: true,
 	})
 
 	app.Use(cors.New())
@@ -46,6 +47,8 @@ func main() {
 func GetJob(c *fiber.Ctx) error {
 	// get id from url
 	id := c.Params("id")
+
+	log.Println("Get job with id: " + id)
 
 	var job entities.Job
 	// get job from db
@@ -83,6 +86,7 @@ func CreateJob(c *fiber.Ctx) error {
 		Location:    input.Location,
 		CompanyName: input.CompanyName,
 		CompanyLogo: input.CompanyLogo,
+		Source:      "custom",
 	}
 
 	// save job to database

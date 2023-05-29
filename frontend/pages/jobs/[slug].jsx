@@ -48,13 +48,24 @@ export default function Job() {
                         <h3 className="text-2xl font-bold">
                             {job.data.location}
                         </h3>
+                        <h3 className="text-2xl font-bold">
+                            {job.data.source}
+                        </h3>
 
                     </div>
-
                 </div>
 
-                <p className="text-xl mt-10">
-                    {job.data.description}
+                <div className="flex flex-wrap items-center justify-center space-x-3 space-y-2 bg-gray-300 dark:bg-gray-600 rounded-md p-4 mt-4">
+                    {job.data.tags.map((tag, index) => (
+                        // if first tag, add a margin up
+                        <span key={index} className="text-sm mt-2 font-bold text-gray-800 dark:text-gray-200 bg-gray-200 dark:bg-gray-800 rounded-md p-2" >
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+
+                <p className="text-lg mt-10">
+                    <div dangerouslySetInnerHTML={{ __html: job.data.description }} />
                 </p>
             </main>
         </div>

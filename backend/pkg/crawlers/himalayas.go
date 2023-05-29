@@ -1,4 +1,4 @@
-package sources
+package crawlers
 
 import (
 	"bytes"

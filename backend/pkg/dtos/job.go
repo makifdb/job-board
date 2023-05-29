@@ -25,5 +25,6 @@ type JobDTO struct {
 	Location    string   `json:"location"`
 	CompanyName string   `json:"company_name"`
 	CompanyLogo string   `json:"company_logo"`
+	Source      string   `json:"source"`
 	Tags        []string `json:"tags"`
 }
