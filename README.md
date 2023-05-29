@@ -21,4 +21,4 @@ make hot
 
 ## Architecture
 
-![architecture](/docs/architecture.svg)
+![architecture](/docs/architecture.png)
