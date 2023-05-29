@@ -1,0 +1,3 @@
+[submodule "simple-api-gateway"]
+	path = gateway
+	url = https://github.com/makifdb/simple-api-gateway
