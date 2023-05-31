@@ -19,6 +19,9 @@ Start all services with development mode
 make hot
 ```
 
+## Documentation
+[DOCS](/docs/doc.md)
+
 ## Architecture
 
-![architecture](/docs/architecture.png)
+![architecture](/docs/images/architecture.png)

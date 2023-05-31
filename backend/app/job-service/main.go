@@ -86,7 +86,7 @@ func CreateJob(c *fiber.Ctx) error {
 		Location:    input.Location,
 		CompanyName: input.CompanyName,
 		CompanyLogo: input.CompanyLogo,
-		Source:      "custom",
+		Source:      "job-board",
 	}
 
 	// save job to database

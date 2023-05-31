@@ -45,16 +45,34 @@ export default function JobCreate() {
             </Head>
 
             <main className="flex flex-col justify-center w-full flex-1 text-center">
-                <h1 className="text-4xl text-left font-bold">Create a Job</h1>
-
                 <form
-                    className="flex flex-col items-center justify-center w-full mt-12"
+                    className="flex flex-col items-center justify-center w-full space-y-6"
                     onSubmit={handleSubmit}
                 >
-                    <div className="flex flex-col items-center justify-center w-full">
-                        <label htmlFor="title" className="text-2xl">
-                            Title
-                        </label>
+                    <div className="flex flex-row justify-between items-center w-full px-3 py-4 border border-black dark:border-white rounded-md mb-4">
+                        <h1 className="text-4xl text-left font-bold">Post a Job</h1>
+                        <button
+                            type="submit"
+                            className="p-2 text-gray-200 dark:text-gray-900 bg-black dark:bg-gray-200 rounded-md hover:opacity-90 dark:hover:bg-gray-300"
+                        >
+                            CREATE
+                        </button>
+
+                    </div>
+                    <div className="flex flex-col justify-center w-full">
+                        <div className="flex flex-row justify-between items-center w-full border border-black dark:border-white rounded-md p-2">
+                            <label htmlFor="title" className="text-2xl text-left font-semibold tracking-wider ">
+                                Title
+                            </label>
+                            <div className="flex flex-row justify-between items-center space-x-3">
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                    Job title
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {formData.title.length} / 60
+                                </p>
+                            </div>
+                        </div>
                         <input
                             type="text"
                             name="title"
@@ -65,10 +83,20 @@ export default function JobCreate() {
                         />
                     </div>
 
-                    <div className="flex flex-col items-center justify-center w-full mt-4">
-                        <label htmlFor="location" className="text-2xl">
-                            Location
-                        </label>
+                    <div className="flex flex-col justify-center w-full mt-4">
+                        <div className="flex flex-row justify-between items-center w-full border border-black dark:border-white rounded-md p-2">
+                            <label htmlFor="title" className="text-2xl text-left font-semibold tracking-wider ">
+                                Location
+                            </label>
+                            <div className="flex flex-row justify-between items-center space-x-3">
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                    Location of the job (e.g. Remote)
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {formData.location.length} / 60
+                                </p>
+                            </div>
+                        </div>
                         <input
                             type="text"
                             name="location"
@@ -79,10 +107,20 @@ export default function JobCreate() {
                         />
                     </div>
 
-                    <div className="flex flex-col items-center justify-center w-full mt-4">
-                        <label htmlFor="company_name" className="text-2xl">
-                            Company Name
-                        </label>
+                    <div className="flex flex-col justify-center w-full mt-4">
+                        <div className="flex flex-row justify-between items-center w-full border border-black dark:border-white rounded-md p-2">
+                            <label htmlFor="title" className="text-2xl text-left font-semibold tracking-wider ">
+                                Company Name
+                            </label>
+                            <div className="flex flex-row justify-between items-center space-x-3">
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                    Name of the company hiring
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {formData.company_name.length} / 60
+                                </p>
+                            </div>
+                        </div>
                         <input
                             type="text"
                             name="company_name"
@@ -93,10 +131,20 @@ export default function JobCreate() {
                         />
                     </div>
 
-                    <div className="flex flex-col items-center justify-center w-full mt-4">
-                        <label htmlFor="company_logo" className="text-2xl">
-                            Company Logo
-                        </label>
+                    <div className="flex flex-col justify-center w-full mt-4">
+                        <div className="flex flex-row justify-between items-center w-full border border-black dark:border-white rounded-md p-2">
+                            <label htmlFor="title" className="text-2xl text-left font-semibold tracking-wider ">
+                                Company Logo
+                            </label>
+                            <div className="flex flex-row justify-between items-center space-x-3">
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                    You can use a link to an image
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {formData.company_logo.length} / 60
+                                </p>
+                            </div>
+                        </div>
                         <input
                             type="text"
                             name="company_logo"
@@ -107,26 +155,29 @@ export default function JobCreate() {
                         />
                     </div>
 
-                    <div className="flex flex-col items-center justify-center w-full mt-4">
-                        <label htmlFor="description" className="text-2xl">
-                            Description
-                        </label>
+                    <div className="flex flex-col justify-center w-full mt-4">
+                        <div className="flex flex-row justify-between items-center w-full border border-black dark:border-white rounded-md p-2">
+                            <label htmlFor="title" className="text-2xl text-left font-semibold tracking-wider ">
+                                Description
+                            </label>
+                            <div className="flex flex-row justify-between items-center space-x-3">
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                    Don't forget to include how to apply!
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {formData.description.length} / 5000
+                                </p>
+                            </div>
+                        </div>
                         <textarea
                             name="description"
                             id="description"
                             className="w-full p-2 mt-2 border dark:bg-black border-gray-300 rounded-md"
-                            rows={8}
+                            rows={20}
                             value={formData.description}
                             onChange={handleChange}
                         />
                     </div>
-
-                    <button
-                        type="submit"
-                        className="w-full p-2 mt-4 text-white bg-gray-500 rounded-md"
-                    >
-                        Create
-                    </button>
                 </form>
             </main>
         </div>

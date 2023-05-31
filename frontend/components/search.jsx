@@ -31,7 +31,7 @@ export default function Search() {
 }
 
 const Hit = ({ hit }) => (
-    <div className="flex flex-row mt-4 p-4 w-full min-w-full rounded-lg items-center space-x-4 bg-gray-700 hover:bg-gray-800">
+    <div className="flex flex-row mt-4 p-4 w-full min-w-full rounded-lg items-center space-x-4 border my-2 hover:border-2">
         <Link href={`/jobs/${hit.id}`} key={hit.id} className="flex flex-row w-full items-center space-x-4">
             <img src={hit.company_logo} alt={hit.company_name} width={100} height={100} className='rounded-full bg-white' />
             <div className="flex flex-col items-start justify-center">
@@ -41,7 +41,7 @@ const Hit = ({ hit }) => (
                 <h2 className="text-lg text-gray-300">
                     <Highlight attribute="company_name" hit={hit} />
                 </h2>
-                <span className="text-gray-400">
+                <span className={`text-sm ${hit.source === 'himalayas' ? 'bg-green-700 text-green-200' : 'bg-blue-700 text-blue-200'} rounded-md px-2 py-1`}>
                     {hit.source}
                 </span>
             </div>

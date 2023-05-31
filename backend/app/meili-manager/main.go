@@ -24,14 +24,20 @@ func main() {
 }
 
 func PushJobsToMeili(Db *gorm.DB, index *meilisearch.Index) {
-	limit := 1
+	limit := 5
 	offset := 0
 	for {
 		err := meili.LoadJobsToMeili(limit, offset, Db, index)
 		if err != nil {
-			log.Println("error loading jobs to meili :" + err.Error())
+			if err.Error() == "no jobs found" {
+				log.Println("no jobs found, offset reset")
+				offset = 0
+			} else {
+				log.Println("error loading jobs to meili :" + err.Error())
+				offset += limit
+			}
 		} else {
-			log.Println("loaded jobs to meili")
+			log.Println("jobs loaded to meili")
 			offset += limit
 		}
 

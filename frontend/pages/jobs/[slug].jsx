@@ -36,7 +36,7 @@ export default function Job() {
                 <h1 className="text-4xl text-left font-bold my-6">
                     {job.data.title}
                 </h1>
-                <div className="flex flex-row items-center space-x-4 bg-gray-300 dark:bg-gray-600 rounded-md p-4">
+                <div className="flex flex-row items-center space-x-4 border border-black dark:border-white rounded-md p-4">
                     <img className="rounded-full w-32"
                         src={job.data.company_logo}
                         alt={job.data.company_name}
@@ -55,7 +55,7 @@ export default function Job() {
                     </div>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center space-x-3 space-y-2 bg-gray-300 dark:bg-gray-600 rounded-md p-4 mt-4">
+                <div className="flex flex-wrap items-center justify-center space-x-3 space-y-2 border border-black dark:border-white rounded-md p-4 mt-4">
                     {job.data.tags.map((tag, index) => (
                         // if first tag, add a margin up
                         <span key={index} className="text-sm mt-2 font-bold text-gray-800 dark:text-gray-200 bg-gray-200 dark:bg-gray-800 rounded-md p-2" >
@@ -65,7 +65,8 @@ export default function Job() {
                 </div>
 
                 <p className="text-lg mt-10">
-                    <div dangerouslySetInnerHTML={{ __html: job.data.description }} />
+                    <div className='prose dark:prose-dark space-y-4'
+                     dangerouslySetInnerHTML={{ __html: job.data.description }} />
                 </p>
             </main>
         </div>
